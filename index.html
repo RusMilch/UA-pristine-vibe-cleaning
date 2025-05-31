@@ -10,8 +10,37 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Montserrat', sans-serif; line-height: 1.6; color: #333; background: #fff; }
-    header { background: #1d1d1d url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1470&q=80') no-repeat center/cover; color: white; padding: 4em 1em; text-align: center; }
-    header h1 { font-size: 2.5em; margin-bottom: 0.3em; }
+    header { 
+      position: relative;
+      color: white; 
+      padding: 4em 1em; 
+      text-align: center;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1470&q=80') no-repeat center/cover;
+      filter: blur(5px);
+      z-index: -1;
+      transform: scale(1.1);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+    header h1 { font-size: 2.5em; margin-bottom: 0.3em; position: relative; }
+    nav { position: relative; }
     nav a { color: white; margin: 0 1em; text-decoration: none; font-weight: 600; }
     .section { padding: 3em 1em; max-width: 1100px; margin: auto; }
     .section h2 { text-align: center; font-size: 2em; margin-bottom: 1em; }
