@@ -1,211 +1,52 @@
+
+@@ -0,0 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Background Blur</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UA Pristine Vibe Cleaning | Professional Cleaning Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      line-height: 1.5;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      background: #f5f5f5;
-    }
-    .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    h1 { margin-bottom: 1rem; color: #333; }
-    .upload-area {
-      border: 2px dashed #ccc;
-      padding: 2rem;
-      text-align: center;
-      margin-bottom: 2rem;
-      border-radius: 8px;
-      background: #fafafa;
-    }
-    .upload-area.drag-over {
-      border-color: #2196f3;
-      background: #e3f2fd;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
-    }
-    .image-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .image-card img {
-      width: 100%;
-      height: auto;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-    }
-    .controls {
-      display: flex;
-      gap: 0.5rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      background: #2196f3;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    button:hover {
-      background: #1976d2;
-    }
-    .blur-range {
-      width: 100%;
-      margin: 1rem 0;
-    }
-    #fileInput {
-      display: none;
-    }
+    body { font-family: 'Montserrat', sans-serif; line-height: 1.6; color: #333; background: #fff; }
+    header { background: #1d1d1d url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1470&q=80') no-repeat center/cover; color: white; padding: 4em 1em; text-align: center; }
+    header h1 { font-size: 2.5em; margin-bottom: 0.3em; }
+    nav a { color: white; margin: 0 1em; text-decoration: none; font-weight: 600; }
+    .section { padding: 3em 1em; max-width: 1100px; margin: auto; }
+    .section h2 { text-align: center; font-size: 2em; margin-bottom: 1em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5em; }
+    .card { background: #f8f8f8; padding: 1.5em; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); text-align: center; }
+    .card i { font-size: 2em; margin-bottom: 0.5em; color: #e67e22; }
+    .card h3 { margin: 0.5em 0; color: #444; }
+    .card .price-list { text-align: left; margin: 1em 0; font-size: 0.9em; }
+    .card .price-list li { list-style: none; margin-bottom: 0.5em; }
+    form { display: flex; flex-direction: column; gap: 1em; max-width: 500px; margin: auto; }
+    input, textarea { padding: 0.75em; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 0.75em; background: #e67e22; color: white; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; }
+    footer { background: #1d1d1d; color: white; text-align: center; padding: 2em 1em; margin-top: 2em; }
+    a { color: #e67e22; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Image Background Blur</h1>
-    
-    <div class="upload-area" id="dropZone">
-      <p>Drag & drop images here or</p>
-      <input type="file" id="fileInput" accept="image/*" multiple>
-      <button onclick="document.getElementById('fileInput').click()">Select Files</button>
-    </div>
+  <header>
+    <h1>UA Pristine Vibe Cleaning</h1>
+    <p>Professional Cleaning Services in Edmonton, Canada</p>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#advantages">Advantages</a>
+      <a href="#booking">Book Now</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-    <div class="gallery" id="gallery"></div>
-  </div>
-
-  <script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const gallery = document.getElementById('gallery');
-
-    // Prevent default drag behaviors
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, preventDefaults, false);
-      document.body.addEventListener(eventName, preventDefaults, false);
-    });
-
-    // Highlight drop zone when item is dragged over it
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropZone.addEventListener(eventName, highlight, false);
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, unhighlight, false);
-    });
-
-    // Handle dropped files
-    dropZone.addEventListener('drop', handleDrop, false);
-    fileInput.addEventListener('change', handleFiles, false);
-
-    function preventDefaults (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-
-    function highlight(e) {
-      dropZone.classList.add('drag-over');
-    }
-
-    function unhighlight(e) {
-      dropZone.classList.remove('drag-over');
-    }
-
-    function handleDrop(e) {
-      const dt = e.dataTransfer;
-      const files = dt.files;
-      handleFiles({ target: { files } });
-    }
-
-    function handleFiles(e) {
-      const files = [...e.target.files];
-      files.forEach(processFile);
-    }
-
-    function processFile(file) {
-      if (!file.type.startsWith('image/')) return;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => createImageCard(img, file.name);
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function createImageCard(img, filename) {
-      const card = document.createElement('div');
-      card.className = 'image-card';
-
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const blurRange = document.createElement('input');
-      blurRange.type = 'range';
-      blurRange.min = '0';
-      blurRange.max = '50';
-      blurRange.value = '20';
-      blurRange.className = 'blur-range';
-
-      const controls = document.createElement('div');
-      controls.className = 'controls';
-
-      const applyButton = document.createElement('button');
-      applyButton.textContent = 'Apply Blur';
-      applyButton.onclick = () => applyBackgroundBlur(canvas, img, parseInt(blurRange.value));
-
-      const downloadButton = document.createElement('button');
-      downloadButton.textContent = 'Download';
-      downloadButton.onclick = () => downloadImage(canvas, filename);
-
-      controls.appendChild(applyButton);
-      controls.appendChild(downloadButton);
-
-      card.appendChild(canvas);
-      card.appendChild(blurRange);
-      card.appendChild(controls);
-      gallery.appendChild(card);
-    }
-
-    function applyBackgroundBlur(canvas, img, blurAmount) {
-      const ctx = canvas.getContext('2d');
-      
-      // Clear canvas and draw original image
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0);
-
-      // Apply blur effect
-      ctx.filter = `blur(${blurAmount}px)`;
-      ctx.drawImage(img, 0, 0);
-      
-      // Reset filter
-      ctx.filter = 'none';
-    }
-
-    function downloadImage(canvas, filename) {
-      const link = document.createElement('a');
-      link.download = filename.replace(/\.[^/.]+$/, '') + '_blurred.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }
-  </script>
-</body>
-</html>
+  <section class="section" id="services">
+    <h2 data-aos="fade-up">Our Services</h2>
+    <div class="grid">
+      <div class="card" data-aos="fade-up">
+        <i class="fas fa-spray-can-sparkles"></i>
+        <h3>Standard Cleaning</h3>
+        <ul class="price-list">
+          <li>800-1000 sq.ft - $0.20/sq.ft</li>
